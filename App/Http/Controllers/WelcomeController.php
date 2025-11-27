@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace app\Http\Controllers;
 
 use Illuminate\View\View;
 
-class WelcomeController extends Controller
+class HomeController extends Controller
 {
-    public function __invoke(): View
+    public function index(): View
     {
         return view('welcome');
     }

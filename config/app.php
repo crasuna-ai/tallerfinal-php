@@ -59,7 +59,7 @@ return [
     ],
 
     'aliases' => [
-        'App' => Illuminate\Support\Facades\App::class,
+        'app' => Illuminate\Support\Facades\app::class,
         'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
         'Auth' => Illuminate\Support\Facades\Auth::class,

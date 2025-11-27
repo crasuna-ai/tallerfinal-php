@@ -3,7 +3,5 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome', [
-        'currentPath' => request()->getPathInfo(),
-    ]);
-    });
+    return view('welcome');
+});
