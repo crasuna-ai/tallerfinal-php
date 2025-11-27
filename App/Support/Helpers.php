@@ -1,3 +1,3 @@
 <?php
 
-// Application helper functions can be added here.
+// Espacio reservado para helpers globales.
