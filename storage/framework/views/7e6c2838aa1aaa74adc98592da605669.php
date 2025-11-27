@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laboratorio MVC - Herramientas Interactivas</title>
+    <title>Taller MVC</title>
     <style>
         :root {
             --bg: #0f172a;
@@ -50,6 +50,12 @@
         .card h2 { margin-top: 0; display: flex; align-items: center; gap: 8px; font-size: 18px; }
         .card h2 span { font-size: 22px; }
         .muted { color: var(--muted); font-size: 14px; margin: 4px 0 12px; }
+
+        .hidden { display: none; }
+
+        .tool-nav { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; max-width: 960px; margin: 0 auto; padding: 0 24px 12px; }
+        .tool-nav button { background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: var(--text); }
+        .tool-nav button.active { background: linear-gradient(135deg, #22c55e, #16a34a); color: #0f172a; }
 
         input, select, button, textarea {
             width: 100%;
@@ -101,9 +107,21 @@
 </head>
 <body>
 <header>
-    <h1>Panel de ejercicios MVC</h1>
-    <p class="lead">Implementación de 10 herramientas prácticas solicitadas para la evaluación final.</p>
+    <h1>Taller MVC</h1>
+    <p class="lead">Selecciona una herramienta a la vez para explorarlas por separado.</p>
 </header>
+<div class="tool-nav" aria-label="Navegación de herramientas">
+    <button class="tool-tab active" data-target="todo-card">Lista de Tareas</button>
+    <button class="tool-tab" data-target="tip-card">Calculadora de Propinas</button>
+    <button class="tool-tab" data-target="password-card">Generador de Contraseñas</button>
+    <button class="tool-tab" data-target="expense-card">Gestor de Gastos</button>
+    <button class="tool-tab" data-target="booking-card">Sistema de Reservas</button>
+    <button class="tool-tab" data-target="notes-card">Bloc de Notas</button>
+    <button class="tool-tab" data-target="memory-card">Juego de Memoria</button>
+    <button class="tool-tab" data-target="event-card">Planificador de Eventos</button>
+    <button class="tool-tab" data-target="recipe-card">Plataforma de Recetas</button>
+    <button class="tool-tab" data-target="timer-card">Cronómetro</button>
+</div>
 <main>
     <div class="grid">
         <section class="card" id="todo-card">
@@ -178,29 +196,16 @@
             <ul class="list" id="reserve-list"></ul>
         </section>
 
-        <section class="card" id="habit-card">
-            <h2><span>📈</span>Seguimiento de Hábitos</h2>
-            <p class="muted">Controla hábitos diarios y visualiza tu racha.</p>
-            <div class="grid-two">
-                <input id="habit-name" placeholder="Hábito">
-                <button id="habit-add">Añadir hábito</button>
+        <section class="card hidden" id="notes-card">
+            <h2><span>📝</span>Bloc de Notas</h2>
+            <p class="muted">Captura apuntes rápidos y consúltalos cuando los necesites.</p>
+            <input id="note-title" placeholder="Título de la nota">
+            <textarea id="note-body" rows="3" placeholder="Contenido"></textarea>
+            <div class="grid-two" style="margin-top:8px;">
+                <button id="note-add">Guardar nota</button>
+                <button id="note-clear" class="secondary">Limpiar campos</button>
             </div>
-            <ul class="list" id="habit-list"></ul>
-        </section>
-
-        <section class="card" id="music-card">
-            <h2><span>🎵</span>Reproductor de Música</h2>
-            <p class="muted">Demo con tono sintético para reproducir/pausar.</p>
-            <select id="music-track">
-                <option value="440">Melodía base (440 Hz)</option>
-                <option value="523">Acorde brillante (523 Hz)</option>
-                <option value="659">Arpegio suave (659 Hz)</option>
-            </select>
-            <div class="grid-two" style="margin-top:10px;">
-                <button id="music-play">Reproducir</button>
-                <button id="music-stop" class="secondary">Pausar</button>
-            </div>
-            <div class="muted" id="music-status">Silencio</div>
+            <ul class="list" id="note-list"></ul>
         </section>
 
         <section class="card" id="memory-card">
@@ -225,13 +230,14 @@
             <ul class="list" id="event-list"></ul>
         </section>
 
-        <section class="card" id="poll-card">
-            <h2><span>📊</span>Plataforma de Encuestas</h2>
-            <p class="muted">Crea encuestas y contabiliza votos en vivo.</p>
-            <input id="poll-question" placeholder="Pregunta">
-            <input id="poll-options" placeholder="Opciones separadas por coma" style="margin-top:6px;">
-            <button id="poll-create" style="margin-top:8px;">Publicar encuesta</button>
-            <div id="poll-list" style="margin-top:10px; display: grid; gap: 12px;"></div>
+         <section class="card hidden" id="recipe-card">
+            <h2><span>🍳</span>Plataforma de Recetas</h2>
+            <p class="muted">Guarda recetas con ingredientes y pasos detallados.</p>
+            <input id="recipe-name" placeholder="Nombre de la receta">
+            <textarea id="recipe-ingredients" rows="2" placeholder="Ingredientes (separados por comas)"></textarea>
+            <textarea id="recipe-steps" rows="3" placeholder="Pasos"></textarea>
+            <button id="recipe-add" style="margin-top:8px;">Agregar receta</button>
+            <ul class="list" id="recipe-list"></ul>
         </section>
 
         <section class="card" id="timer-card">
@@ -248,6 +254,21 @@
     </div>
 </main>
 <script>
+    const tabs = document.querySelectorAll('.tool-tab');
+    const cards = document.querySelectorAll('.card');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            const target = tab.dataset.target;
+            cards.forEach(card => {
+                card.classList.toggle('hidden', card.id !== target);
+            });
+        });
+    });
+    const activeTab = document.querySelector('.tool-tab.active');
+    if (activeTab) activeTab.click();
+
     // Lista de tareas
     const todoInput = document.getElementById('todo-input');
     const todoList = document.getElementById('todo-list');
@@ -359,66 +380,47 @@
         renderReserves();
     });
 
-    // Seguimiento de hábitos
-    const habits = [];
-    const habitList = document.getElementById('habit-list');
-    const renderHabits = () => {
-        habitList.innerHTML = '';
-        habits.forEach((habit, index) => {
+            // Bloc de notas
+    const notes = [];
+    const noteList = document.getElementById('note-list');
+    const renderNotes = () => {
+        noteList.innerHTML = '';
+        if (!notes.length) {
+            const li = document.createElement('li');
+            li.textContent = 'Aún no hay apuntes';
+            noteList.append(li);
+            return;
+        }
+        notes.forEach((note, index) => {
             const li = document.createElement('li');
             const info = document.createElement('div');
-            info.innerHTML = `<strong>${habit.name}</strong><div class="progress"><span style="width:${Math.min(habit.streak, 21)/21*100}%"></span></div><small class="muted">Racha: ${habit.streak} días</small>`;
-            const btn = document.createElement('button');
-            btn.textContent = 'Marcar hoy';
-            btn.style.maxWidth = '120px';
-            btn.addEventListener('click', () => {
-                habit.streak += 1;
-                renderHabits();
+            info.innerHTML = `<strong>${note.title || 'Sin título'}</strong><div class="muted">${note.body}</div>`;
+            const remove = document.createElement('button');
+            remove.textContent = 'Eliminar';
+            remove.className = 'secondary';
+            remove.style.maxWidth = '100px';
+            remove.addEventListener('click', () => {
+                notes.splice(index, 1);
+                renderNotes();
             });
-            const reset = document.createElement('button');
-            reset.textContent = 'Reiniciar';
-            reset.className = 'secondary';
-            reset.style.maxWidth = '100px';
-            reset.addEventListener('click', () => {
-                habit.streak = 0;
-                renderHabits();
-            });
-            li.append(info, btn, reset);
-            habitList.append(li);
+            li.append(info, remove);
+            noteList.append(li);
         });
     };
-    document.getElementById('habit-add').addEventListener('click', () => {
-        const name = document.getElementById('habit-name').value.trim();
-        if (!name) return;
-        habits.push({ name, streak: 0 });
-        document.getElementById('habit-name').value = '';
-        renderHabits();
+    document.getElementById('note-add').addEventListener('click', () => {
+        const title = document.getElementById('note-title').value.trim();
+        const body = document.getElementById('note-body').value.trim();
+        if (!body && !title) return;
+        notes.unshift({ title, body });
+        document.getElementById('note-title').value = '';
+        document.getElementById('note-body').value = '';
+        renderNotes();
     });
-
-    // Reproductor de música (tono sintético)
-    let audioCtx;
-    let oscillator;
-    const musicStatus = document.getElementById('music-status');
-    document.getElementById('music-play').addEventListener('click', () => {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const frequency = parseInt(document.getElementById('music-track').value, 10) || 440;
-        if (oscillator) oscillator.stop();
-        oscillator = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        oscillator.type = 'sine';
-        oscillator.frequency.value = frequency;
-        gainNode.gain.value = 0.08;
-        oscillator.connect(gainNode).connect(audioCtx.destination);
-        oscillator.start();
-        musicStatus.textContent = `Reproduciendo tono ${frequency}Hz`;
+    document.getElementById('note-clear').addEventListener('click', () => {
+        document.getElementById('note-title').value = '';
+        document.getElementById('note-body').value = '';
     });
-    document.getElementById('music-stop').addEventListener('click', () => {
-        if (oscillator) {
-            oscillator.stop();
-            oscillator = null;
-            musicStatus.textContent = 'Silencio';
-        }
-    });
+    renderNotes();
 
     // Juego de memoria
     const memoryGrid = document.getElementById('memory-grid');
@@ -511,40 +513,39 @@
         renderEvents();
     });
 
-    // Plataforma de encuestas
-    const pollList = document.getElementById('poll-list');
-    const polls = [];
-    const renderPolls = () => {
-        pollList.innerHTML = '';
-        polls.forEach((poll, pollIndex) => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.style.padding = '12px';
-            card.innerHTML = `<strong>${poll.question}</strong>`;
-            const optionsWrapper = document.createElement('div');
-            optionsWrapper.className = 'poll-options';
-            poll.options.forEach((opt, optIndex) => {
-                const btn = document.createElement('button');
-                btn.textContent = `${opt.label} (${opt.votes})`;
-                btn.addEventListener('click', () => {
-                    polls[pollIndex].options[optIndex].votes += 1;
-                    renderPolls();
-                });
-                optionsWrapper.append(btn);
-            });
-            card.append(optionsWrapper);
-            pollList.append(card);
+        // Plataforma de recetas
+    const recipeList = document.getElementById('recipe-list');
+    const recipes = [];
+    const renderRecipes = () => {
+        recipeList.innerHTML = '';
+        if (!recipes.length) {
+            const li = document.createElement('li');
+            li.textContent = 'Aún no hay recetas guardadas';
+            recipeList.append(li);
+            return;
+        }
+        recipes.forEach((recipe) => {
+            const li = document.createElement('li');
+            const info = document.createElement('div');
+            const ingredients = recipe.ingredients.length ? recipe.ingredients.join(', ') : 'Sin ingredientes';
+            info.innerHTML = `<strong>${recipe.name || 'Receta sin nombre'}</strong><div class="muted">Ingredientes: ${ingredients}</div><div class="muted">Pasos: ${recipe.steps}</div>`;
+            li.append(info);
+            recipeList.append(li);
         });
     };
-    document.getElementById('poll-create').addEventListener('click', () => {
-        const question = document.getElementById('poll-question').value.trim();
-        const options = document.getElementById('poll-options').value.split(',').map(o => o.trim()).filter(Boolean);
-        if (!question || options.length < 2) return;
-        polls.push({ question, options: options.map(label => ({ label, votes: 0 })) });
-        document.getElementById('poll-question').value = '';
-        document.getElementById('poll-options').value = '';
-        renderPolls();
+        document.getElementById('recipe-add').addEventListener('click', () => {
+        const name = document.getElementById('recipe-name').value.trim();
+        const ingredientsInput = document.getElementById('recipe-ingredients').value.trim();
+        const steps = document.getElementById('recipe-steps').value.trim();
+        if (!name && !ingredientsInput && !steps) return;
+        const ingredients = ingredientsInput ? ingredientsInput.split(',').map(i => i.trim()).filter(Boolean) : [];
+        recipes.unshift({ name, ingredients, steps });
+        document.getElementById('recipe-name').value = '';
+        document.getElementById('recipe-ingredients').value = '';
+        document.getElementById('recipe-steps').value = '';
+        renderRecipes();
     });
+    renderRecipes();
 
     // Cronómetro
     const timerDisplay = document.getElementById('timer-display');
