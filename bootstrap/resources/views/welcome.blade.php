@@ -1,26 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laravel Starter</title>
+    <title>Bienvenido</title>
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
     <style>
-        body { font-family: system-ui, sans-serif; margin: 0; padding: 2rem; background: #f8fafc; color: #0f172a; }
-        .card { background: white; padding: 2rem; border-radius: 1rem; box-shadow: 0 10px 40px rgba(15, 23, 42, 0.1); max-width: 720px; margin: 2rem auto; }
-        h1 { margin-top: 0; }
-        code { background: #e2e8f0; padding: 0.25rem 0.5rem; border-radius: 0.375rem; }
-        ul { margin-top: 1rem; }
+        :root {
+            font-family: 'Figtree', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            color: #0f172a;
+            background-color: #f8fafc;
+            line-height: 1.5;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 2rem;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+            padding: 2rem 2.5rem;
+            max-width: 720px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            margin: 0 0 1rem;
+        }
+
+        p {
+            margin: 0.35rem 0;
+            color: #475569;
+        }
+
+        .cta {
+            margin-top: 1.5rem;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(90deg, #2563eb, #7c3aed);
+            color: #fff;
+            padding: 0.8rem 1.2rem;
+            border-radius: 0.75rem;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+        }
+
+        .muted {
+            color: #94a3b8;
+            font-size: 0.95rem;
+        }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>Laravel listo para tus ejercicios</h1>
-        <p>Este proyecto incluye la estructura base de Laravel 11 para que puedas desarrollar los ejercicios solicitados. Instala las dependencias con Composer y ejecuta las migraciones para comenzar.</p>
-        <ul>
-            <li>Ejecuta <code>composer install</code> (después copia <code>.env.example</code> a <code>.env</code> y genera la clave con <code>php artisan key:generate</code>).</li>
-            <li>Configura tu base de datos en el archivo <code>.env</code> y corre <code>php artisan migrate</code>.</li>
-            <li>Levanta el servidor con <code>php artisan serve</code> y abre <code>http://localhost:8000</code>.</li>
-        </ul>
-    </div>
+    <main class="card">
+        <h1>¡Bienvenido a Laravel!</h1>
+        <p>La vista de inicio se ha configurado correctamente.</p>
+        <p class="muted">Ruta actual: <code>{{ $currentPath ?? '/' }}</code></p>
+        <div class="cta">
+            <a class="button" href="https://laravel.com/docs">Leer la documentación</a>
+        </div>
+    </main>
 </body>
 </html>
